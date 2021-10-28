@@ -12,7 +12,6 @@ import {Theme} from '../types';
 import styleConstructor from './style';
 import populateEvents from './Packer';
 
-
 const LEFT_MARGIN = 60 - 1;
 const TEXT_LINE_HEIGHT = 17;
 
@@ -28,12 +27,16 @@ export type Event = {
   title: string;
   summary: string;
   color?: string;
+  description?: string;
+  icon?: string;
+  eventId?: string;
 };
 
 export interface TimelineProps {
   events: Event[];
   start?: number;
   end?: number;
+  selectedDate?: Date;
   eventTapped?: (event: Event) => void; //TODO: deprecate (prop renamed 'onEventPress', as in the other components).
   onEventPress?: (event: Event) => void;
   styles?: Theme; //TODO: deprecate (prop renamed 'theme', as in the other components).
@@ -125,9 +128,12 @@ export default class Timeline extends Component<TimelineProps, State> {
   }
 
   _renderLines() {
-    const {format24h, start = 0, end = 24} = this.props;
+    const {format24h, start = 0, end = 24, selectedDate} = this.props;
     const offset = this.calendarHeight / (end - start);
     const EVENT_DIFF = 20;
+
+    const isCurrentDate = !!selectedDate && selectedDate.toDateString() === new Date().toDateString();
+    const currentHour = isCurrentDate ? new Date().getHours() : -1;
 
     return range(start, end + 1).map((i, index) => {
       let timeText;
@@ -145,22 +151,45 @@ export default class Timeline extends Component<TimelineProps, State> {
       }
 
       return [
-        <Text key={`timeLabel${i}`} style={[this.style.timeLabel, {top: offset * index - 6}]}>
+        <Text
+          key={`timeLabel${i}`}
+          style={[this.style.timeLabel, i === currentHour && this.style.currentTime, {top: offset * index - 6}]}
+        >
           {timeText}
         </Text>,
         i === start ? null : (
-          <View key={`line${i}`} style={[this.style.line, {top: offset * index, width: dimensionWidth - EVENT_DIFF}]} />
+          <View
+            key={`line${i}`}
+            style={[
+              this.style.line,
+              i === currentHour && this.style.lineNow,
+              {top: offset * index, width: dimensionWidth - EVENT_DIFF}
+            ]}
+          >
+            {i === currentHour && (
+              <View style={[this.style.dotContainer]}>
+                <View style={this.style.dotNow} />
+              </View>
+            )}
+          </View>
         ),
         <View
           key={`lineHalf${i}`}
-          style={[this.style.line, {top: offset * (index + 0.5), width: dimensionWidth - EVENT_DIFF}]}
-        />
+          style={[
+            this.style.line,
+            {borderWidth: 0, overflow: 'hidden', backgroundColor: 'transparent'},
+            {top: offset * (index + 0.5), width: dimensionWidth - EVENT_DIFF}
+          ]}
+        >
+          <View style={[this.style.lineHalf]} />
+        </View>
       ];
     });
   }
 
   _onEventPress(event: Event) {
-    if (this.props.eventTapped) { //TODO: remove after deprecation
+    if (this.props.eventTapped) {
+      //TODO: remove after deprecation
       this.props.eventTapped(event);
     } else {
       invoke(this.props, 'onEventPress', event);
@@ -202,11 +231,13 @@ export default class Timeline extends Component<TimelineProps, State> {
                   {event.summary || ' '}
                 </Text>
               ) : null}
-              {numberOfLines > 2 ? (
-                <Text style={this.style.eventTimes} numberOfLines={1}>
-                  {new XDate(event.start).toString(formatTime)} - {new XDate(event.end).toString(formatTime)}
-                </Text>
-              ) : null}
+              <View>
+                {numberOfLines > 2 ? (
+                  <Text style={this.style.eventTimes} numberOfLines={1}>
+                    {new XDate(event.start).toString(formatTime)} - {new XDate(event.end).toString(formatTime)}
+                  </Text>
+                ) : null}
+              </View>
             </View>
           )}
         </TouchableOpacity>
@@ -222,10 +253,7 @@ export default class Timeline extends Component<TimelineProps, State> {
 
   render() {
     return (
-      <ScrollView
-        ref={this.scrollView}
-        contentContainerStyle={[this.style.contentStyle, {width: dimensionWidth}]}
-      >
+      <ScrollView ref={this.scrollView} contentContainerStyle={[this.style.contentStyle, {width: dimensionWidth}]}>
         {this._renderLines()}
         {this._renderEvents()}
       </ScrollView>

@@ -1,18 +1,17 @@
 import {ViewStyle, TextStyle} from 'react-native';
 import {UpdateSources} from './expandableCalendar/commons';
 
-
 export type MarkingTypes = 'dot' | 'multi-dot' | 'period' | 'multi-period' | 'custom';
 export type DayState = 'selected' | 'disabled' | 'inactive' | 'today' | '';
 export type Direction = 'left' | 'right';
 export type UpdateSource = keyof typeof UpdateSources;
 export type DateData = {
-  year: number,
-  month: number,
-  day: number,
-  timestamp: number,
-  dateString: string
-}
+  year: number;
+  month: number;
+  day: number;
+  timestamp: number;
+  dateString: string;
+};
 export interface Theme {
   container?: object;
   contentStyle?: ViewStyle;
@@ -23,20 +22,23 @@ export interface Theme {
   eventTitle?: object;
   eventSummary?: object;
   eventTimes?: object;
-  line?: object;
-  lineNow?: object;
+  line?: ViewStyle;
+  lineHalf?: ViewStyle;
+  lineNow?: ViewStyle;
+  currentTime?: TextStyle;
+  dotNowColor?: string;
   timeLabel?: object;
   todayTextColor?: string;
   calendarBackground?: string;
   indicatorColor?: string;
   stylesheet?: {
-    calendar?: {main?: object, header?: object};
+    calendar?: {main?: object; header?: object};
     day?: {basic?: object; period?: object};
     dot?: object;
     marking?: object;
     'calendar-list'?: {main?: object};
-    agenda?: {main?: object, list?: object};
-    expandable?: {main?: object}
+    agenda?: {main?: object; list?: object};
+    expandable?: {main?: object};
   };
   textSectionTitleColor?: string;
   textSectionTitleDisabledColor?: string;

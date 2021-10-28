@@ -90,12 +90,38 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
       backgroundColor: 'rgb(216,216,216)',
       ...theme.line
     },
+    lineHalf: {
+      borderColor: 'rgb(216,216,216)',
+      ...theme.lineHalf
+    },
     lineNow: {
-      height: 1,
-      position: 'absolute',
-      left: leftMargin,
-      backgroundColor: 'red',
       ...theme.lineNow
+    },
+    dotNow: {
+      backgroundColor: theme.dotNowColor ?? '#17B169',
+      width: 7,
+      height: 7,
+      borderRadius: 7
+    },
+    dotContainer: {
+      position: 'absolute',
+      left: -4,
+      top: -4,
+      width: 8,
+      height: 8,
+      borderRadius: 8,
+      backgroundColor: '#ffffff',
+      justifyContent: 'center',
+      alignItems: 'center',
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+
+      elevation: 5
     },
     timeLabel: {
       position: 'absolute',
@@ -105,6 +131,9 @@ export default function styleConstructor(theme: Theme = {}, calendarHeight: numb
       fontFamily: Platform.OS === 'ios' ? 'Helvetica Neue' : 'Roboto',
       fontWeight: '500',
       ...theme.timeLabel
+    },
+    currentTime: {
+      ...theme.currentTime
     }
   });
 }
