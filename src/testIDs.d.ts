@@ -1,0 +1,11 @@
+export declare const CHANGE_MONTH_LEFT_ARROW: string;
+export declare const CHANGE_MONTH_RIGHT_ARROW: string;
+export declare const SELECT_DATE_SLOT: string;
+export declare const CALENDAR_KNOB: string;
+export declare const STATIC_HEADER = "STATIC_HEADER";
+export declare const AGENDA_CALENDAR_KNOB: string;
+export declare const HEADER_MONTH_NAME = "HEADER_MONTH_NAME";
+export declare const RESERVATION_DATE: string;
+export declare const HEADER_DAY_NAMES: string;
+export declare const WEEK_NUMBER: string;
+export declare const HEADER_LOADING_INDICATOR: string;
