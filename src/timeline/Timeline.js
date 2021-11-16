@@ -82,10 +82,13 @@ export default class Timeline extends Component {
     const {format24h, start = 0, end = 24, selectedDate} = this.props;
     const offset = this.calendarHeight / (end - start);
     const EVENT_DIFF = 20;
+
     const isCurrentDate = !!selectedDate && selectedDate.toDateString() === new Date().toDateString();
     const currentHour = isCurrentDate ? new Date().getHours() : -1;
+
     return range(start, end + 1).map((i, index) => {
       let timeText;
+
       if (i === start) {
         timeText = '';
       } else if (i < 12) {
@@ -97,6 +100,7 @@ export default class Timeline extends Component {
       } else {
         timeText = !format24h ? `${i - 12} PM` : `${i}:00`;
       }
+
       return [
         <Text
           key={`timeLabel${i}`}
@@ -174,13 +178,11 @@ export default class Timeline extends Component {
                   {event.summary || ' '}
                 </Text>
               ) : null}
-              <View>
-                {numberOfLines > 2 ? (
-                  <Text style={this.style.eventTimes} numberOfLines={1}>
-                    {new XDate(event.start).toString(formatTime)} - {new XDate(event.end).toString(formatTime)}
-                  </Text>
-                ) : null}
-              </View>
+              {numberOfLines > 2 ? (
+                <Text style={this.style.eventTimes} numberOfLines={1}>
+                  {new XDate(event.start).toString(formatTime)} - {new XDate(event.end).toString(formatTime)}
+                </Text>
+              ) : null}
             </View>
           )}
         </TouchableOpacity>
@@ -194,7 +196,11 @@ export default class Timeline extends Component {
   }
   render() {
     return (
-      <ScrollView ref={this.scrollView} contentContainerStyle={[this.style.contentStyle, {width: dimensionWidth}]}>
+      <ScrollView
+        ref={this.scrollView}
+        contentContainerStyle={[this.style.contentStyle, {width: dimensionWidth}]}
+        {...(this.props.scrollViewProps ?? {})}
+      >
         {this._renderLines()}
         {this._renderEvents()}
       </ScrollView>

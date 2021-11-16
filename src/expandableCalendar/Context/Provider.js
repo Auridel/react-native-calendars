@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import XDate from 'xdate';
 import React, {Component} from 'react';
 import {StyleSheet, Animated, TouchableOpacity, View} from 'react-native';
+// @ts-expect-error
 import {toMarkingFormat} from '../../interface';
 import styleConstructor from '../style';
 import CalendarContext from '.';
@@ -58,13 +59,12 @@ class CalendarProvider extends Component {
   };
   setDate = (date, updateSource) => {
     const {setDate} = this.presenter;
-    const d = date instanceof Date ? date : new Date(date);
     const updateState = buttonIcon => {
       this.setState({date, prevDate: this.state.date, updateSource, buttonIcon}, () => {
-        this.animateTodayButton(d);
+        this.animateTodayButton(date);
       });
     };
-    setDate(this.props, d, this.state.date, updateState, updateSource);
+    setDate(this.props, date, this.state.date, updateState, updateSource);
   };
   setDisabled = disabled => {
     const {setDisabled} = this.presenter;

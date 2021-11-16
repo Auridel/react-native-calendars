@@ -1,8 +1,10 @@
 // @flow
 import {Platform, StyleSheet} from 'react-native';
+
 // const eventPaddingLeft = 4
 const leftMargin = 50 - 1;
-export default function styleConstructor(theme = {}, calendarHeight) {
+
+export default function styleConstructor(theme, calendarHeight) {
   return StyleSheet.create({
     container: {
       flex: 1,
@@ -117,6 +119,7 @@ export default function styleConstructor(theme = {}, calendarHeight) {
       },
       shadowOpacity: 0.25,
       shadowRadius: 3.84,
+
       elevation: 5
     },
     timeLabel: {

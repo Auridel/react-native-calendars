@@ -7,9 +7,12 @@ import PropTypes from 'prop-types';
 import memoize from 'memoize-one';
 import XDate from 'xdate';
 import React, {Component} from 'react';
-import {AccessibilityInfo, PanResponder, Animated, View, Text, Image} from 'react-native';
+import {AccessibilityInfo, PanResponder, Animated, View, Text, Image, Platform} from 'react-native';
+// @ts-expect-error
 import {CALENDAR_KNOB} from '../testIDs';
+// @ts-expect-error
 import {page, weekDayNames} from '../dateutils';
+// @ts-expect-error
 import {parseDate, toMarkingFormat} from '../interface';
 import styleConstructor, {HEADER_HEIGHT} from './style';
 import CalendarList from '../calendar-list';
@@ -26,7 +29,7 @@ var Positions;
 })(Positions || (Positions = {}));
 const SPEED = 20;
 const BOUNCINESS = 6;
-const CLOSED_HEIGHT = 120; // header + 1 week
+const CLOSED_HEIGHT = Platform.OS == 'ios' ? 80 : 120; // header + 1 week def: 120
 const WEEK_HEIGHT = 46;
 const KNOB_CONTAINER_HEIGHT = 20;
 const DAY_NAMES_PADDING = 24;
@@ -194,7 +197,11 @@ class ExpandableCalendar extends Component {
     if (!this.props.horizontal) {
       return Math.max(commons.screenHeight, commons.screenWidth);
     }
-    return CLOSED_HEIGHT + WEEK_HEIGHT * (this.numberOfWeeks - 1) + (this.props.hideKnob ? 12 : KNOB_CONTAINER_HEIGHT);
+    return (
+      CLOSED_HEIGHT +
+      WEEK_HEIGHT * (Platform.OS === 'android' ? this.numberOfWeeks : this.numberOfWeeks - 1) +
+      (this.props.hideKnob ? 12 : KNOB_CONTAINER_HEIGHT)
+    );
   }
   getYear(date) {
     const d = new XDate(date);

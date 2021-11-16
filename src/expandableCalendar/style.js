@@ -10,9 +10,9 @@ export default function styleConstructor(theme = {}) {
       ...Platform.select({
         ios: {
           shadowColor: '#858F96',
-          shadowOpacity: 0.25,
-          shadowRadius: 10,
-          shadowOffset: {height: 2, width: 0},
+          shadowOpacity: 0.05,
+          shadowRadius: 5,
+          shadowOffset: {height: 5, width: 0},
           zIndex: 99
         },
         android: {

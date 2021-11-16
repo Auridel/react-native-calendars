@@ -1,10 +1,14 @@
 import PropTypes from 'prop-types';
 import React, {PureComponent} from 'react';
-import {View} from 'react-native';
+import {Platform, View} from 'react-native';
+// @ts-expect-error
 import {getWeekDates, sameMonth} from '../dateutils';
+// @ts-expect-error
 import {parseDate, toMarkingFormat} from '../interface';
+// @ts-expect-error
 import {getState} from '../day-state-manager';
-import {extractComponentProps} from '../componentUpdater';
+// @ts-expect-error
+import {extractComponentProps} from '../component-updater';
 import styleConstructor from './style';
 import Calendar from '../calendar';
 import Day from '../calendar/day/index';
@@ -56,7 +60,7 @@ class Week extends PureComponent {
     //   week.unshift(this.renderWeekNumber(item[item.length - 1].getWeek()));
     // }
     return (
-      <View style={this.style.container}>
+      <View style={[this.style.container, Platform.OS === 'ios' && {top: -40}]}>
         <View style={[this.style.week, this.props.style]}>{week}</View>
       </View>
     );
