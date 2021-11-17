@@ -197,12 +197,16 @@ export default class Timeline extends Component {
   render() {
     return (
       <ScrollView
+        overScrollMode="never"
         ref={this.scrollView}
         contentContainerStyle={[this.style.contentStyle, {width: dimensionWidth}]}
         {...(this.props.scrollViewProps ?? {})}
       >
-        {this._renderLines()}
-        {this._renderEvents()}
+        {!!this.props.HeaderComponent && this.props.HeaderComponent}
+        <View>
+          {this._renderLines()}
+          {this._renderEvents()}
+        </View>
       </ScrollView>
     );
   }

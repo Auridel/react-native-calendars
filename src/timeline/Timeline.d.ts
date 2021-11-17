@@ -24,6 +24,7 @@ export interface TimelineProps {
   format24h?: boolean;
   selectedDate: Date;
   scrollViewProps: ScrollViewProps;
+  HeaderComponent?: Element;
   renderEvent?: (event: Event) => JSX.Element;
 }
 interface State {
